@@ -1,0 +1,46 @@
+<html>
+
+<head>
+  <title>Todo List</title>
+  <script src="/js/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
+  <script src="/assets/todo-list.js"></script>
+  <link rel="stylesheet" href="/assets/styles.css" type="text/css">
+</head>
+
+<body>
+  <h1>My Todo List</h1>
+
+  <div id="todo-table">
+    <form>
+      <input id="m" type="text" name="item" placeholder="Add new item..." required>
+      <button type="submit">Add Item</button>
+    </form>
+
+    <p>
+      <%= stuff.I0 %>
+    </p>
+    <p id="tickTac">test</p>
+
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+
+  <script>    
+    $(function () {
+      var socket = io.connect();
+
+      $('form').submit(function () {
+        socket.emit('chat message', $('#m').val());
+        $('#m').val('');
+        return false;
+      });
+
+      socket.on('test1', function (tickTac) {
+        document.getElementById("tickTac").innerHTML = tickTac;
+      });
+
+    });
+  </script>
+
+</body>
+
+</html>
