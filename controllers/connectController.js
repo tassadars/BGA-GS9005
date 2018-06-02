@@ -41,8 +41,8 @@ function getInputs() {
   });
 };
 
-connectToPLC();
-getInputs();
+//connectToPLC();
+//getInputs();
 
 module.exports = function (app) {
 

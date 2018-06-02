@@ -2,7 +2,7 @@
 
 <head>
   <title>Todo List</title>
-  <script src="/js/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
+  <script src="/js/jquery-1.12.4.js"></script>
   <script src="/assets/todo-list.js"></script>
   <link rel="stylesheet" href="/assets/styles.css" type="text/css">
 </head>
@@ -19,7 +19,15 @@
     <p>
       <%= stuff.I0 %>
     </p>
-    <p id="tickTac">test</p>
+    <div state-color="111" class="indicator" id="tickTac2"></div>
+    <p state-color="111" id="tickTac">test</p>
+
+    <p state-color="1">Lorem 1</p>
+    <p state-color="2">Lorem 2</p>
+    <p state-color="3">Lorem 3</p>
+    <p state-color="4">Lorem 4</p>
+    <p state-color="5">Lorem 5</p>
+    <p state-color="6">Lorem 6</p>
 
   </div>
   <script src="/socket.io/socket.io.js"></script>
@@ -36,8 +44,22 @@
 
       socket.on('test1', function (tickTac) {
         document.getElementById("tickTac").innerHTML = tickTac;
-      });
+        document.getElementById("tickTac").setAttribute("state-color", tickTac);
+        document.getElementById("tickTac2").setAttribute("state-color", tickTac);
 
+        // change color of html tag
+        //=================================================================================
+        // for information (deprecated solution)
+        // const stateColorText = {
+        //   '1': 'teal-text',
+        //   '2': 'green-text',
+        //   '3': 'red-text',
+        //   '4': 'yellow-text',
+        //   '5': 'brown-text'
+        // };
+        //=================================================================================
+
+      });
     });
   </script>
 

@@ -1,10 +1,10 @@
-body{
+body {
     background: #0d1521;
     font-family: tahoma;
     color: #989898;
 }
 
-#todo-table{
+#todo-table {
     position: relative;
     width: 95%;
     background: #090d13;
@@ -13,24 +13,24 @@ body{
     box-sizing: border-box;
 }
 
-#todo-table form:after{
+#todo-table form:after {
     margin: 0;
     content: '';
     display: block;
     clear: both;
 }
 
-input[type="text"]{
+input[type="text"] {
     width: 70%;
     padding: 20px;
-    background:#181c22;
+    background: #181c22;
     border: 0;
     float: left;
     font-size: 20px;
     color: #989898;
 }
 
-button{
+button {
     padding: 20px;
     width: 30%;
     float: left;
@@ -42,13 +42,13 @@ button{
     font-size: 20px;
 }
 
-ul{
+ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
 }
 
-li{
+li {
     width: 100%;
     padding: 20px;
     box-sizing: border-box;
@@ -58,13 +58,68 @@ li{
     letter-spacing: 1px;
 }
 
-li:hover{
+li:hover {
     text-decoration: line-through;
-    background: rgba(0,0,0,0.2);
+    background: rgba(0, 0, 0, 0.2);
 }
 
-h1{
+h1 {
     background: url(/assets/logo.png) no-repeat center;
     margin-bottom: 0;
     text-indent: -10000px;
 }
+
+
+/* Dynamic color change by socket io */
+
+.indicator {
+    height: 10px;
+    width: 10px;
+    background-color: grey;
+}
+
+/* for text */
+
+p[state-color="3"] {
+    color: red;
+}
+
+p[state-color="4"] {
+    color: yellow;
+}
+
+p[state-color="1"] {
+    color: teal;
+}
+
+p[state-color="2"] {
+    color: green;
+}
+
+p[state-color="5"] {
+    color: chocolate;
+}
+
+/* for rectangles and other shapes */
+
+div[state-color="3"] {
+    background-color: red;
+}
+
+div[state-color="4"] {
+    background-color: yellow;
+}
+
+div[state-color="1"] {
+    background-color: teal;
+}
+
+div[state-color="2"] {
+    background-color: green;
+}
+
+div[state-color="5"] {
+    background-color: chocolate;
+}
+
+/*  */
