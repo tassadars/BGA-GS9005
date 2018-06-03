@@ -123,3 +123,9 @@ div[state-color="5"] {
 }
 
 /*  */
+
+
+#tickTac3[state-color="1"] {
+    fill: red;
+}
+
