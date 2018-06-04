@@ -16,13 +16,14 @@
     </form>
 
     <p>
-      <%= plcData.I0 %>
-        <% for(var i=0; i < plcData.I0.length; i++){  %>
-          <div class="indicator inline" state-color="<%= plcData.I0[i] %>"></div>
-
-          <% }; %>
+      <% for(var inputByte in plcData){  %>
+          <% for(var i = 0; i < 7; i++){  %>
+            <div class="indicator inline" state-color="<%= plcData[inputByte][i] %>"></div>
+            <% }; %>
+      <% }; %>
     </p>
 
+    <br>
     <p state-color="111" id="tickTac">test</p>
 
     <p state-color="1">Lorem 1</p>
@@ -53,7 +54,7 @@
       });
 
       socket.on('test1', function (plcData) {
-        document.getElementById("tickTac").innerHTML = plcData;
+        document.getElementById("tickTac").innerHTML = plcData.I0;
         document.getElementById("tickTac").setAttribute("state-color", plcData);
 
 
