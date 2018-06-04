@@ -17,15 +17,16 @@
 
     <p>
       <% for(var inputByte in plcData){  %>
-          <% for(var i = 0; i < 7; i++){  %>
-            <div class="indicator inline" state-color="<%= plcData[inputByte][i] %>"></div>
+        <% for(var bit = 0; bit < 7; bit++){  %>
+          <div class="indicator inline" state-color="<%= plcData[inputByte][bit] %>"></div>
+          <% }; %>
+            <br class="clearBoth">
             <% }; %>
-      <% }; %>
     </p>
 
-    <br>
+    <br class="clearBoth">
     <p state-color="111" id="tickTac">test</p>
-
+    <br>
     <p state-color="1">Lorem 1</p>
     <p state-color="2">Lorem 2</p>
     <p state-color="3">Lorem 3</p>
@@ -46,6 +47,7 @@
   <script>    
     $(function () {
       var socket = io.connect();
+      var indicators = document.getElementsByClassName("indicator");       
 
       $('form').submit(function () {
         socket.emit('chat message', $('#m').val());
@@ -54,9 +56,18 @@
       });
 
       socket.on('test1', function (plcData) {
-        document.getElementById("tickTac").innerHTML = plcData.I0;
-        document.getElementById("tickTac").setAttribute("state-color", plcData);
+        //document.getElementById("tickTac").innerHTML = plcData.I20[1];
+        //document.getElementById("tickTac").setAttribute("state-color", plcData.I20[1]);
 
+        //console.log(indicators.length);
+          var index = 0;
+          for (var inputByte in plcData) {
+            for (var bit = 0; bit < 7 ; bit++) {
+              indicators[index].setAttribute("state-color", plcData[inputByte][bit]);
+              index++;
+            }
+          }
+        
 
         // change color of html tag
         //=================================================================================

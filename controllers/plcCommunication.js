@@ -5,7 +5,7 @@ connectToPLC();
 
 setInterval(function () {  
   getInputs();
-}, 1000);
+}, 500);
 
 
 module.exports = function () {
