@@ -1,10 +1,12 @@
 var m_snap7 = require('node-snap7');
 var s7client = new snap7.S7Client();
 
-connectToPLC();
+//connectToPLC();
+connectToPLCSim();
 
-setInterval(function () {  
-  getInputs();
+setInterval(function () {
+  //getInputs();
+  getInputsSim();
 }, 500);
 
 
@@ -60,10 +62,31 @@ function getInputs() {
       plcData.I17 = bits.data[17].toString(2).padStart(8, '0').split('').reverse();
       plcData.I18 = bits.data[18].toString(2).padStart(8, '0').split('').reverse();
       plcData.I19 = bits.data[19].toString(2).padStart(8, '0').split('').reverse();
-      plcData.I20 = bits.data[20].toString(2).padStart(8, '0').split('').reverse();      
-    
+      plcData.I20 = bits.data[20].toString(2).padStart(8, '0').split('').reverse();
+
       //console.log(plcData);
     }
   });
 };
 
+
+
+function connectToPLCSim() {
+  for (i = 0; i < 21; i++) {
+    let b0 = (Math.random() > 0.5) ? 1 : 0;
+    let b1 = (Math.random() > 0.5) ? 1 : 0;
+    let b2 = (Math.random() > 0.5) ? 1 : 0;
+    let b3 = (Math.random() > 0.5) ? 1 : 0;
+    let b4 = (Math.random() > 0.5) ? 1 : 0;
+    let b5 = (Math.random() > 0.5) ? 1 : 0;
+    let b6 = (Math.random() > 0.5) ? 1 : 0;
+    let b7 = (Math.random() > 0.5) ? 1 : 0;
+
+    plcData["I" + i] = [b0, b1, b2, b3, b4, b5, b6, b7];
+  }
+}
+
+function getInputsSim() {
+  connectToPLCSim();
+  plcData["I" + Math.floor((Math.random()*21))][Math.floor((Math.random()*7))] = (Math.random() > 0.5) ? 1 : 0;
+}
