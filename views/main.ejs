@@ -17,11 +17,11 @@
 
     <p>
       <%= plcData.I0 %>
+        <% for(var i=0; i < plcData.I0.length; i++){  %>
+          <div class="indicator inline" state-color="<%= plcData.I0[i] %>"></div>
+
+          <% }; %>
     </p>
-    <div state-color="111" class="indicator" id="tickTac2"></div>
-    <div state-color="111" class="indicator" id="tickTac2"></div>
-    <div state-color="111" class="indicator" id="tickTac2"></div>
-    <div state-color="111" class="indicator" id="tickTac2"></div>
 
     <p state-color="111" id="tickTac">test</p>
 
@@ -31,6 +31,8 @@
     <p state-color="4">Lorem 4</p>
     <p state-color="5">Lorem 5</p>
     <p state-color="6">Lorem 6</p>
+
+
 
     <svg width="300" height="300">
       <circle state-color="111" id="tickTac3" cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" />
@@ -50,13 +52,10 @@
         return false;
       });
 
-      socket.on('test1', function (tickTac) {
-        document.getElementById("tickTac").innerHTML = tickTac;
-        document.getElementById("tickTac").setAttribute("state-color", tickTac);
-        document.getElementById("tickTac2").setAttribute("state-color", tickTac);
+      socket.on('test1', function (plcData) {
+        document.getElementById("tickTac").innerHTML = plcData;
+        document.getElementById("tickTac").setAttribute("state-color", plcData);
 
-        document.getElementById("tickTac3").setAttribute("state-color", tickTac);
-        
 
         // change color of html tag
         //=================================================================================

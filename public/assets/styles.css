@@ -81,7 +81,7 @@ h1 {
 /* for text */
 
 p[state-color="3"] {
-    color: red;
+    color: rgb(255,0,0);;
 }
 
 p[state-color="4"] {
@@ -89,7 +89,7 @@ p[state-color="4"] {
 }
 
 p[state-color="1"] {
-    color: teal;
+    color: rgb(0,255,0);
 }
 
 p[state-color="2"] {
@@ -103,7 +103,7 @@ p[state-color="5"] {
 /* for rectangles and other shapes */
 
 div[state-color="3"] {
-    background-color: red;
+    background-color: rgb(255,0,0);;;
 }
 
 div[state-color="4"] {
@@ -111,7 +111,7 @@ div[state-color="4"] {
 }
 
 div[state-color="1"] {
-    background-color: teal;
+    background-color: rgb(0,255,0);;
 }
 
 div[state-color="2"] {
@@ -121,6 +121,12 @@ div[state-color="2"] {
 div[state-color="5"] {
     background-color: chocolate;
 }
+
+div.inline {
+    float: left;
+    margin: 5px;
+}
+
 
 /*  */
 
