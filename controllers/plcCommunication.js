@@ -1,8 +1,12 @@
 var m_snap7 = require('node-snap7');
 var s7client = new snap7.S7Client();
 
-var bodyParser = require('body-parser');
-var urlencodedParser = bodyParser.urlencoded({ extended: false });
+connectToPLC();
+getInputs();
+
+module.exports = function () {
+
+};
 
 function connectToPLC() {
   // connect to S7-400
@@ -40,28 +44,3 @@ function getInputs() {
   });
 };
 
-connectToPLC();
-getInputs();
-
-module.exports = function (app) {
-
-  app.get('/todo', function (req, res) {
-
-    res.render('todo', { plcData: stuff });
-  });
-
-  app.post('/todo', urlencodedParser, function (req, res) {
-    // plcData.push(req.body);
-    // res.json(plcData);
-  });
-
-
-  app.delete('/todo/:item', function (req, res) {
-    plcData = plcData.filter(function (todo) {
-      //return true or false
-      return todo.item.replace(/ /g, '-') !== req.params.item;
-    });
-    res.json(plcData);
-  });
-
-};

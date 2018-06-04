@@ -5,14 +5,6 @@ setInterval(function () {
 }, 1000);
 
 /**
- * Module dependencies.
- */
-// var m_async = require('async');
-// var m_snap7 = require('node-snap7');
-// var m_crypto = require('crypto');
-// var m_net = require('net');
-
-/**
  * Socket.io event handling
  */
 module.exports = function (io) {

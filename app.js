@@ -1,7 +1,6 @@
-var todoController = require('./controllers/todoController');
-var connectController = require('./controllers/connectController');
+var mainPageController = require('./controllers/mainPageController.js');
+var plcCommunication = require('./controllers/plcCommunication.js');
 var socketReadEvents = require('./events/socketRead.js');
-//var converterController = require('./controllers/converterController');
 
 // global variable
 global.plcData = {};
@@ -18,7 +17,8 @@ app.use(express.static('./public'));
 app.set('view engine', 'ejs');
 
 //fire controllers
-connectController(app);
+mainPageController(app);
+plcCommunication();
 socketReadEvents(io);
 //todoController(app);
 //converterController(app);
@@ -26,6 +26,5 @@ socketReadEvents(io);
 //listen to port
 http.listen(3000, function (){
   console.log('You are listening to port 3000');
-  console.log(connectController.stuff);
 });
 
