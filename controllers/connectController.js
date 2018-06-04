@@ -2,8 +2,6 @@ var m_snap7 = require('node-snap7');
 var s7client = new snap7.S7Client();
 
 var bodyParser = require('body-parser');
-var stuff = {};
-var inputs = {};
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 function connectToPLC() {
@@ -33,7 +31,8 @@ function getInputs() {
       console.log(bits.data[2].toString(2).padStart(8, '0').split('').reverse());
       console.log(bits.data[3].toString(2).padStart(8, '0').split('').reverse());
 
-      stuff.I0 = bits.data[0].toString(2).padStart(8, '0').split('').reverse();
+      // global variable
+      plcData.I0 = bits.data[0].toString(2).padStart(8, '0').split('').reverse();
     
       //console.log(inputs.I0);
 
@@ -41,28 +40,28 @@ function getInputs() {
   });
 };
 
-//connectToPLC();
-//getInputs();
+connectToPLC();
+getInputs();
 
 module.exports = function (app) {
 
   app.get('/todo', function (req, res) {
 
-    res.render('todo', { stuff: stuff });
+    res.render('todo', { plcData: stuff });
   });
 
   app.post('/todo', urlencodedParser, function (req, res) {
-    // stuff.push(req.body);
-    // res.json(stuff);
+    // plcData.push(req.body);
+    // res.json(plcData);
   });
 
 
   app.delete('/todo/:item', function (req, res) {
-    stuff = stuff.filter(function (todo) {
+    plcData = plcData.filter(function (todo) {
       //return true or false
       return todo.item.replace(/ /g, '-') !== req.params.item;
     });
-    res.json(stuff);
+    res.json(plcData);
   });
 
 };

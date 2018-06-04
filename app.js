@@ -3,6 +3,9 @@ var connectController = require('./controllers/connectController');
 var socketReadEvents = require('./events/socketRead.js');
 //var converterController = require('./controllers/converterController');
 
+// global variable
+global.plcData = {};
+
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
@@ -22,6 +25,7 @@ socketReadEvents(io);
 
 //listen to port
 http.listen(3000, function (){
-  console.log('You are listening to port 3000'); 
+  console.log('You are listening to port 3000');
+  console.log(connectController.stuff);
 });
 

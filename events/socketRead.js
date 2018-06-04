@@ -33,8 +33,8 @@ module.exports = function (io) {
 
     clearInterval(checkInterval);
     checkInterval = setInterval(function () {
-      io.emit('test1', tickTac);    
-      console.log('current value on server tickTack: ' + tickTac + ' ' + new Date().getMilliseconds());
+      io.emit('test1', plcData.I0);    
+      console.log('current value from PLC plcData.I0: ' + plcData.I0 + ' timestamp: ' + new Date().getMilliseconds());
     }, 1000);
 
   });
