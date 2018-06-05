@@ -3,6 +3,7 @@ var s7client = new snap7.S7Client();
 
 //connectToPLC();
 connectToPLCSim();
+console.log(plcData);
 
 setInterval(function () {
   //getInputs();
@@ -87,6 +88,5 @@ function connectToPLCSim() {
 }
 
 function getInputsSim() {
-  connectToPLCSim();
   plcData["I" + Math.floor((Math.random()*21))][Math.floor((Math.random()*7))] = (Math.random() > 0.5) ? 1 : 0;
 }

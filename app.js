@@ -1,9 +1,9 @@
+// global variable
+global.plcData = {};
+
 var mainPageController = require('./controllers/mainPageController.js');
 var plcCommunication = require('./controllers/plcCommunication.js');
 var socketReadEvents = require('./events/socketRead.js');
-
-// global variable
-global.plcData = {};
 
 var express = require('express');
 var app = express();
