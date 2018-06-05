@@ -6,7 +6,7 @@ connectToPLC();
 //connectToPLCSim();
 
 setInterval(function () {
-  getInputs(0, 81);
+  getInputs(0, 41);
   //getInputsSim();
 }, 500);
 

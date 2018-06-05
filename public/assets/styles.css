@@ -72,6 +72,7 @@ h1 {
 h2 {
     margin: -5px;
     margin-left: -20px;
+    font-size: 1.5em;
 }
 
 /* Dynamic color change by socket io */
@@ -137,16 +138,18 @@ div.indicatorCaption {
 
 p.tagMark {
     position: relative;
+    margin: 0px;
     margin-left: -20px;
-    margin-top: -2px;
+    margin-top: -3px;
     font-size: 11px;
     color:  rgb(0,255,0);
 }
 
 p.bitMark {
     position: relative;
+    margin: 0px;
     margin-left: 2px;
-    margin-top: -2px;
+    margin-top: -3.5px;
     font-size: 11px;
     color:  black;
 }
