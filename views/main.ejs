@@ -16,9 +16,9 @@
     </form>
 
     <p>
-      <% for(var inputByte in plcData){  %>
+      <% for(var inputByte in plcData["inputs"]){  %>
         <% for(var bit = 0; bit < 7; bit++){  %>
-          <div class="indicator inline" state-color="<%= plcData[inputByte][bit] %>"></div>
+          <div class="indicator inline" state-color="<%= plcData["inputs"][inputByte][bit] %>"></div>
           <% }; %>
             <br class="clearBoth">
             <% }; %>
@@ -61,9 +61,9 @@
 
         //console.log(indicators.length);
           var index = 0;
-          for (var inputByte in plcData) {
+          for (var inputByte in plcData["inputs"]) {
             for (var bit = 0; bit < 7 ; bit++) {
-              indicators[index].setAttribute("state-color", plcData[inputByte][bit]);
+              indicators[index].setAttribute("state-color", plcData["inputs"][inputByte][bit]);
               index++;
             }
           }

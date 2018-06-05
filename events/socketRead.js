@@ -26,7 +26,7 @@ module.exports = function (io) {
     clearInterval(checkInterval);
     checkInterval = setInterval(function () {
       io.emit('test1', plcData);    
-      console.log('current value from PLC plcData.I0: ' + plcData.I0 + ' timestamp: ' + new Date().getMilliseconds());
+      console.log('current value from PLC plcData["inputs"].I0: ' + plcData["inputs"].I0 + ' timestamp: ' + new Date().getMilliseconds());
     }, 300);
 
   });

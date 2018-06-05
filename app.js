@@ -1,5 +1,9 @@
 // global variable
-global.plcData = {};
+global.plcData = {
+  inputs: {},
+  outputs: {},
+  merkers: {}
+};
 
 var mainPageController = require('./controllers/mainPageController.js');
 var plcCommunication = require('./controllers/plcCommunication.js');
