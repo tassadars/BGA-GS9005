@@ -15,10 +15,15 @@
       <button type="submit">Add Item</button>
     </form>
 
+    <h2>PLC Inputs:</h2>
     <p>
       <% for(var inputByte in plcData["inputs"]){  %>
-        <% for(var bit = 0; bit < 7; bit++){  %>
-          <div class="indicator inline" state-color="<%= plcData["inputs"][inputByte][bit] %>"></div>
+        <div class="indicatorCaption inline"><p class="tagMark"><%= inputByte %></p></div>
+       
+        <% for(var bit = 0; bit <= 7; bit++){  %>
+          <div class="indicator inline" state-color="<%= plcData["inputs"][inputByte][bit] %>">
+            <p class="bitMark"><%= bit %></p>
+          </div>
           <% }; %>
             <br class="clearBoth">
             <% }; %>
@@ -62,7 +67,7 @@
         //console.log(indicators.length);
           var index = 0;
           for (var inputByte in plcData["inputs"]) {
-            for (var bit = 0; bit < 7 ; bit++) {
+            for (var bit = 0; bit <= 7 ; bit++) {
               indicators[index].setAttribute("state-color", plcData["inputs"][inputByte][bit]);
               index++;
             }

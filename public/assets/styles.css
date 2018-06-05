@@ -69,6 +69,10 @@ h1 {
     text-indent: -10000px;
 }
 
+h2 {
+    margin: -5px;
+    margin-left: -20px;
+}
 
 /* Dynamic color change by socket io */
 
@@ -124,7 +128,27 @@ div[state-color="5"] {
 
 div.inline {
     float: left;
-    margin: 5px;
+    margin-left: 5px;  
+}
+
+div.indicatorCaption {
+    margin: 0px;
+}
+
+p.tagMark {
+    position: relative;
+    margin-left: -20px;
+    margin-top: -2px;
+    font-size: 11px;
+    color:  rgb(0,255,0);
+}
+
+p.bitMark {
+    position: relative;
+    margin-left: 2px;
+    margin-top: -2px;
+    font-size: 11px;
+    color:  black;
 }
 
 .clearBoth {
