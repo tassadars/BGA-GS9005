@@ -7,9 +7,9 @@ connectToPLC();
 
 setInterval(function () {
   getInputs(0, 41);
+  getOutputs(80, 112);
   //getInputsSim();
 }, 500);
-
 
 module.exports = function () {
 
@@ -33,9 +33,7 @@ function getInputs(firstByte, numberOfBytes) {
 
       // console.log(bits.data);
       // var bit0 = (bits.data[0] & 0x01)!=0;
-      // console.log(`${bit0} ${bit1} ${bit2} ${bit3}`);
       // console.log(parseInt(bits.data[0].toString(2), 2));
-
       // console.log(bits.data[0].toString(2).padStart(8, '0').split('').reverse());
       
       for (var i = firstByte; i < numberOfBytes; i++) {
@@ -47,6 +45,22 @@ function getInputs(firstByte, numberOfBytes) {
   });
 };
 
+function getOutputs(firstByte, numberOfBytes) {
+  s7client.ABRead(firstByte, numberOfBytes, function (err, buffer) {
+    if (err)
+      return console.log(' >> ABRead failed. Code #' + err + ' - ' + s7client.ErrorText(err));
+    else {
+
+      var bits = buffer.toJSON();
+      //console.log(bits);      
+      for (var i = firstByte; i < numberOfBytes; i++) {
+          // fill global variable
+        plcData["outputs"]["Q"+i] = bits.data[i - firstByte].toString(2).padStart(8, '0').split('').reverse();     
+      };
+      //console.log(plcData);
+    }
+  });
+};
 
 
 function connectToPLCSim() {
