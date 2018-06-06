@@ -60,26 +60,11 @@
       var socket = io.connect();
       var indicatorsI = document.getElementsByClassName("inputs");
       var indicatorsQ = document.getElementsByClassName("outputs");
-      var allInputsTag = document.getElementById("all-inputs");
+      var allInputTags = document.getElementById("all-inputs");
+      var allOutputTags = document.getElementById("all-outputs");
 
-
-      var inputDivCaption = document.createElement('div');
-      var inputPtag = document.createElement('p');
-
-      var inputDiv = document.createElement('div');
-      var inputPbit = document.createElement('p');
-
-      var brTag = document.createElement('br');
-      
-      var bDoOneTime = false;
-
-      inputDivCaption.className = "indicatorCaption inline";
-      inputPtag.className = "tagMark";
-      inputDiv.className = "indicator inline inputs";
-      inputPbit.className = "bitMark";
-      brTag.className = "clearBoth";
-
-
+      var bDoOneTimeI = false;
+      var bDoOneTimeQ = false;
 
       $('form').submit(function () {
         socket.emit('chat message', $('#m').val());
@@ -87,32 +72,51 @@
         return false;
       });
 
+      function insertIndicatorTags(plcData, plcDataType, fatherTag, bDoOneTime) {
+        var tDivCaption = document.createElement('div');
+        var tP = document.createElement('p');
+
+        var tDiv = document.createElement('div');
+        var tPbit = document.createElement('p');
+
+        var tBr = document.createElement('br');
+
+        tDivCaption.className = "indicatorCaption inline";
+        tP.className = "tagMark";
+        tDiv.className = "indicator inline " + plcDataType;
+        tPbit.className = "bitMark";
+        tBr.className = "clearBoth";
+
+        tDivCaption.appendChild(tP);
+        tDiv.appendChild(tPbit);
+
+        for (var currentByte in plcData[plcDataType]) {
+          tP.innerText = currentByte;
+          fatherTag.appendChild(tDivCaption.cloneNode(true));
+
+          for (var bit = 0; bit <= 7; bit++) {
+            tDiv.setAttribute("state-color", plcData[plcDataType][currentByte][bit]);
+            tPbit.innerHTML = bit;
+            fatherTag.appendChild(tDiv.cloneNode(true));
+          }
+          fatherTag.appendChild(tBr.cloneNode(true));
+        }
+        return bDoOneTime = true;
+      }
+
+
 
       socket.on('test1', function (plcData) {
         //document.getElementById("tickTac").innerHTML = plcData.I20[1];
         //document.getElementById("tickTac").setAttribute("state-color", plcData.I20[1]);
 
-
-        inputDivCaption.appendChild(inputPtag);
-        inputDiv.appendChild(inputPbit);
-
-        if (!bDoOneTime) {
-          for (var currentByte in plcData["inputs"]) {
-            inputPtag.innerText = currentByte;
-            allInputsTag.appendChild(inputDivCaption.cloneNode(true));
-
-            for (var bit = 0; bit <= 7; bit++) {
-              inputDiv.setAttribute("state-color", plcData["inputs"][currentByte][bit]);
-              inputPbit.innerHTML = bit;
-              allInputsTag.appendChild(inputDiv.cloneNode(true));
-            }
-              allInputsTag.appendChild(brTag.cloneNode(true));
-          }
-          bDoOneTime = true;
+        if (!bDoOneTimeI) {
+          bDoOneTimeI = insertIndicatorTags(plcData, "inputs", allInputTags, bDoOneTimeI);
         }
 
-
-
+        if (!bDoOneTimeQ) {
+          bDoOneTimeQ = insertIndicatorTags(plcData, "outputs", allOutputTags, bDoOneTimeQ);
+        }
 
         var index = 0;
         for (var currentByte in plcData["inputs"]) {
@@ -127,7 +131,7 @@
         for (var currentByte in plcData["outputs"]) {
           for (var bit = 0; bit <= 7; bit++) {
             //console.log(index);
-            //indicatorsQ[index].setAttribute("state-color", plcData["outputs"][currentByte][bit]);
+            indicatorsQ[index].setAttribute("state-color", plcData["outputs"][currentByte][bit]);
             index++;
           }
         }
@@ -143,7 +147,6 @@
         //   '5': 'brown-text'
         // };
         //=================================================================================
-
       });
 
     });

@@ -10,8 +10,8 @@ setInterval(function () {
   };
   //console.log("Connected to PLC: " + bConnected);
   plcData["qualitySignal"] = bConnected;
-  getInputs(0, 100);
-  getOutputs(80, 90);
+  getInputs(0, 10);
+  getOutputs(0, 10);
   //getInputsSim();
 }, 500);
 
