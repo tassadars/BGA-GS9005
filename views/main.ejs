@@ -6,7 +6,7 @@
   <script src="/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="/assets/bootstrap.min.css">
   <link rel="stylesheet" href="/assets/styles.css" type="text/css">
-  
+
 </head>
 
 <body>
@@ -19,46 +19,22 @@
     </form>
 
     <div class="row">
-        <div class="col-sm-3">
-            <h2>PLC Inputs:</h2>
-            <p>
-              <% for(var currentByte in plcData["inputs"]){  %>
-                <div class="indicatorCaption inline"><p class="tagMark"><%= currentByte %></p></div>
-               
-                <% for(var bit = 0; bit <= 7; bit++){  %>
-                  <div class="indicator inline inputs" state-color="<%= plcData["inputs"][currentByte][bit] %>">
-                    <p class="bitMark"><%= bit %></p>
-                  </div>
-                  <% }; %>
-                    <br class="clearBoth">
-                    <% }; %>
-            </p>
-        
-        </div>
-
-        <div class="col-sm-3">
-            <h2>PLC Outputs:</h2>
-            <p>
-                <% for(var currentByte in plcData["outputs"]){  %>
-                  <div class="indicatorCaption inline"><p class="tagMark"><%= currentByte %></p></div>
-                 
-                  <% for(var bit = 0; bit <= 7; bit++){  %>
-                    <div class="indicator inline outputs" state-color="<%= plcData["outputs"][currentByte][bit] %>">
-                      <p class="bitMark"><%= bit %></p>
-                    </div>
-                    <% }; %>
-                      <br class="clearBoth">
-                      <% }; %>
-            </p>
-        
-        </div>
-
-        <div class="col-sm-4">
-
-        </div>
+      <div class="col-sm-3">
+        <h2>PLC Inputs:</h2>
+        <p id="all-inputs"></p>
       </div>
 
-   
+      <div class="col-sm-3">
+        <h2>PLC Outputs:</h2>
+        <p id="all-outputs"></p>
+      </div>
+
+      <div class="col-sm-4">
+
+      </div>
+    </div>
+
+
     <br class="clearBoth">
     <p state-color="111" id="tickTac">test</p>
     <br>
@@ -82,8 +58,28 @@
   <script>    
     $(function () {
       var socket = io.connect();
-      var indicatorsI = document.getElementsByClassName("inputs");       
-      var indicatorsQ = document.getElementsByClassName("outputs");    
+      var indicatorsI = document.getElementsByClassName("inputs");
+      var indicatorsQ = document.getElementsByClassName("outputs");
+      var allInputsTag = document.getElementById("all-inputs");
+
+
+      var inputDivCaption = document.createElement('div');
+      var inputPtag = document.createElement('p');
+
+      var inputDiv = document.createElement('div');
+      var inputPbit = document.createElement('p');
+
+      var brTag = document.createElement('br');
+      
+      var bDoOneTime = false;
+
+      inputDivCaption.className = "indicatorCaption inline";
+      inputPtag.className = "tagMark";
+      inputDiv.className = "indicator inline inputs";
+      inputPbit.className = "bitMark";
+      brTag.className = "clearBoth";
+
+
 
       $('form').submit(function () {
         socket.emit('chat message', $('#m').val());
@@ -91,28 +87,50 @@
         return false;
       });
 
+
       socket.on('test1', function (plcData) {
         //document.getElementById("tickTac").innerHTML = plcData.I20[1];
         //document.getElementById("tickTac").setAttribute("state-color", plcData.I20[1]);
 
-        
-          var index = 0;
+
+        inputDivCaption.appendChild(inputPtag);
+        inputDiv.appendChild(inputPbit);
+
+        if (!bDoOneTime) {
           for (var currentByte in plcData["inputs"]) {
-            for (var bit = 0; bit <= 7 ; bit++) {
-              indicatorsI[index].setAttribute("state-color", plcData["inputs"][currentByte][bit]);
-              //console.log(index);
-              index++;
+            inputPtag.innerText = currentByte;
+            allInputsTag.appendChild(inputDivCaption.cloneNode(true));
+
+            for (var bit = 0; bit <= 7; bit++) {
+              inputDiv.setAttribute("state-color", plcData["inputs"][currentByte][bit]);
+              inputPbit.innerHTML = bit;
+              allInputsTag.appendChild(inputDiv.cloneNode(true));
             }
+              allInputsTag.appendChild(brTag.cloneNode(true));
           }
-        
-          index = 0;
-          for (var currentByte in plcData["outputs"]) {
-            for (var bit = 0; bit <= 7 ; bit++) {
-              //console.log(index);
-              indicatorsQ[index].setAttribute("state-color", plcData["outputs"][currentByte][bit]);
-              index++;
-            }
+          bDoOneTime = true;
+        }
+
+
+
+
+        var index = 0;
+        for (var currentByte in plcData["inputs"]) {
+          for (var bit = 0; bit <= 7; bit++) {
+            indicatorsI[index].setAttribute("state-color", plcData["inputs"][currentByte][bit]);
+            //console.log(index);
+            index++;
           }
+        }
+
+        index = 0;
+        for (var currentByte in plcData["outputs"]) {
+          for (var bit = 0; bit <= 7; bit++) {
+            //console.log(index);
+            //indicatorsQ[index].setAttribute("state-color", plcData["outputs"][currentByte][bit]);
+            index++;
+          }
+        }
 
         // change color of html tag
         //=================================================================================
@@ -127,6 +145,7 @@
         //=================================================================================
 
       });
+
     });
   </script>
 

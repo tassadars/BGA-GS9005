@@ -28,7 +28,7 @@ module.exports = function (io) {
       io.emit('test1', plcData);    
       //console.log('current value from PLC plcData["inputs"].I1: ' + plcData["inputs"].I1 + ' timestamp: ' + new Date().getMilliseconds());
       //console.log('current value from PLC plcData["outputs"].Q81: ' + plcData["outputs"].Q81 + ' timestamp: ' + new Date().getMilliseconds());
-      console.log("Quality of signal: " + plcData["qualitySignal"]);
+      console.log("Quality of signal: " + plcData["qualitySignal"] + '; timestamp: ' + new Date().getSeconds() + ' ' + new Date().getMilliseconds());
     }, 300);
 
   });

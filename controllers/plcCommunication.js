@@ -2,8 +2,6 @@ var m_snap7 = require('node-snap7');
 var s7client = new snap7.S7Client();
 var bConnected = false;
 
-
-//connectToPLC();
 //connectToPLCSim();
 
 setInterval(function () {
@@ -12,14 +10,10 @@ setInterval(function () {
   };
   //console.log("Connected to PLC: " + bConnected);
   plcData["qualitySignal"] = bConnected;
-  getInputs(0, 41);
-  getOutputs(80, 112);
+  getInputs(0, 100);
+  getOutputs(80, 90);
   //getInputsSim();
 }, 500);
-
-module.exports = function () {
-
-};
 
 function connectToPLC() {
   // connect to S7-400
@@ -41,7 +35,6 @@ function getInputs(firstByte, numberOfBytes) {
     }
     else {
       var bits = buffer.toJSON();
-      // console.log(bits.data);
       // var bit0 = (bits.data[0] & 0x01)!=0;
       // console.log(parseInt(bits.data[0].toString(2), 2));
       // console.log(bits.data[0].toString(2).padStart(8, '0').split('').reverse());
@@ -50,7 +43,6 @@ function getInputs(firstByte, numberOfBytes) {
         // fill global variable
         plcData["inputs"]["I" + i] = bits.data[i - firstByte].toString(2).padStart(8, '0').split('').reverse();
       };
-      //console.log(plcData);
     }
   });
 };
@@ -63,16 +55,13 @@ function getOutputs(firstByte, numberOfBytes) {
     }
     else {
       var bits = buffer.toJSON();
-      //console.log(bits);      
       for (var i = firstByte; i < numberOfBytes; i++) {
         // fill global variable
         plcData["outputs"]["Q" + i] = bits.data[i - firstByte].toString(2).padStart(8, '0').split('').reverse();
       };
-      //console.log(plcData);
     }
   });
 };
-
 
 function connectToPLCSim() {
   for (i = 0; i < 21; i++) {
@@ -92,3 +81,7 @@ function connectToPLCSim() {
 function getInputsSim() {
   plcData["inputs"]["I" + Math.floor((Math.random() * 21))][Math.floor((Math.random() * 7))] = (Math.random() > 0.5) ? 1 : 0;
 }
+
+module.exports = function () {
+
+};
