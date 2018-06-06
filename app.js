@@ -2,7 +2,9 @@
 global.plcData = {
   inputs: {},
   outputs: {},
-  merkers: {}
+  merkers: {},
+  dbs: {},
+  qualitySignal: false
 };
 
 var mainPageController = require('./controllers/mainPageController.js');

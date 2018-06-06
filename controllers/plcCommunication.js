@@ -10,7 +10,8 @@ setInterval(function () {
   if (!bConnected) {
     connectToPLC();
   };
-  console.log(bConnected);
+  //console.log("Connected to PLC: " + bConnected);
+  plcData["qualitySignal"] = bConnected;
   getInputs(0, 41);
   getOutputs(80, 112);
   //getInputsSim();
@@ -22,13 +23,12 @@ module.exports = function () {
 
 function connectToPLC() {
   // connect to S7-400
-  console.log("Connect to PLC CALL");
+  console.log("Right before CALL s7client.ConnectTo function");
   s7client.ConnectTo('192.168.0.70', 0, 4, function (err) {
     if (err) {
       bConnected = false;
       return console.log(' >> Connection failed. Code #' + err + ' - ' + s7client.ErrorText(err));
     }
-
     bConnected = true;
   });
 };
@@ -40,7 +40,6 @@ function getInputs(firstByte, numberOfBytes) {
       return console.log(' >> EBRead failed. Code #' + err + ' - ' + s7client.ErrorText(err));
     }
     else {
-
       var bits = buffer.toJSON();
       // console.log(bits.data);
       // var bit0 = (bits.data[0] & 0x01)!=0;
@@ -63,7 +62,6 @@ function getOutputs(firstByte, numberOfBytes) {
       return console.log(' >> ABRead failed. Code #' + err + ' - ' + s7client.ErrorText(err));
     }
     else {
-
       var bits = buffer.toJSON();
       //console.log(bits);      
       for (var i = firstByte; i < numberOfBytes; i++) {
