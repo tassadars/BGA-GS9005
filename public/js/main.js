@@ -2,11 +2,18 @@ $(function () {
   var socket = io.connect();
   var indicatorsI = document.getElementsByClassName("inputs");
   var indicatorsQ = document.getElementsByClassName("outputs");
+  var indicatorsM = document.getElementsByClassName("merkers");
+  
+
   var allInputTags = document.getElementById("all-inputs");
   var allOutputTags = document.getElementById("all-outputs");
+  var allMerkerTags = document.getElementById("all-merkers");
+  
 
   var bDoOneTimeI = false;
   var bDoOneTimeQ = false;
+  var bDoOneTimeM = false;
+  
 
   $('form').submit(function () {
     socket.emit('chat message', $('#m').val());
@@ -60,6 +67,11 @@ $(function () {
       bDoOneTimeQ = insertIndicatorTags(plcData, "outputs", allOutputTags, bDoOneTimeQ);
     }
 
+    if (!bDoOneTimeM) {
+      bDoOneTimeM = insertIndicatorTags(plcData, "merkers", allMerkerTags, bDoOneTimeM);
+    }
+    
+
     var index = 0;
     for (var currentByte in plcData["inputs"]) {
       for (var bit = 0; bit <= 7; bit++) {
@@ -74,6 +86,15 @@ $(function () {
       for (var bit = 0; bit <= 7; bit++) {
         //console.log(index);
         indicatorsQ[index].setAttribute("state-color", plcData["outputs"][currentByte][bit]);
+        index++;
+      }
+    }
+
+    index = 0;
+    for (var currentByte in plcData["merkers"]) {
+      for (var bit = 0; bit <= 7; bit++) {
+        //console.log(index);
+        indicatorsM[index].setAttribute("state-color", plcData["merkers"][currentByte][bit]);
         index++;
       }
     }

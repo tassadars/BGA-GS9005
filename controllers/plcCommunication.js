@@ -10,9 +10,11 @@ setInterval(function () {
   };
   //console.log("Connected to PLC: " + bConnected);
   plcData["qualitySignal"] = bConnected;
+
   //getInputs(0, 10);
   //getOutputs(0, 10);
   getIOSim();
+
 }, 500);
 
 function connectToPLC() {
@@ -76,13 +78,15 @@ function connectToPLCSim() {
 
     plcData["inputs"]["I" + i] = [b0, b1, b2, b3, b4, b5, b6, b7];
     plcData["outputs"]["Q" + i] = [b1, b4, b2, b5, b7, b0, b3, b6];
-
+    plcData["merkers"]["M" + i] = [b6, b7, b4, b0, b1, b2, b5, b3];
   }
 }
 
 function getIOSim() {
   plcData["inputs"]["I" + Math.floor((Math.random() * 21))][Math.floor((Math.random() * 7))] = (Math.random() > 0.5) ? 1 : 0;
   plcData["outputs"]["Q" + Math.floor((Math.random() * 21))][Math.floor((Math.random() * 7))] = (Math.random() > 0.5) ? 1 : 0;
+  plcData["merkers"]["M" + Math.floor((Math.random() * 21))][Math.floor((Math.random() * 7))] = (Math.random() > 0.5) ? 1 : 0;
+
 }
 
 
