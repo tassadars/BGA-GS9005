@@ -2,17 +2,17 @@ var m_snap7 = require('node-snap7');
 var s7client = new snap7.S7Client();
 var bConnected = false;
 
-//connectToPLCSim();
+connectToPLCSim();
 
 setInterval(function () {
   if (!bConnected) {
-    connectToPLC();
+    //connectToPLC();
   };
   //console.log("Connected to PLC: " + bConnected);
   plcData["qualitySignal"] = bConnected;
-  getInputs(0, 10);
-  getOutputs(0, 10);
-  //getInputsSim();
+  //getInputs(0, 10);
+  //getOutputs(0, 10);
+  getIOSim();
 }, 500);
 
 function connectToPLC() {
@@ -75,12 +75,16 @@ function connectToPLCSim() {
     let b7 = (Math.random() > 0.5) ? 1 : 0;
 
     plcData["inputs"]["I" + i] = [b0, b1, b2, b3, b4, b5, b6, b7];
+    plcData["outputs"]["Q" + i] = [b1, b4, b2, b5, b7, b0, b3, b6];
+
   }
 }
 
-function getInputsSim() {
+function getIOSim() {
   plcData["inputs"]["I" + Math.floor((Math.random() * 21))][Math.floor((Math.random() * 7))] = (Math.random() > 0.5) ? 1 : 0;
+  plcData["outputs"]["Q" + Math.floor((Math.random() * 21))][Math.floor((Math.random() * 7))] = (Math.random() > 0.5) ? 1 : 0;
 }
+
 
 module.exports = function () {
 
