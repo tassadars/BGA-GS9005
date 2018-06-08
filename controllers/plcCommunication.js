@@ -2,18 +2,20 @@ var m_snap7 = require('node-snap7');
 var s7client = new snap7.S7Client();
 var bConnected = false;
 
-connectToPLCSim();
+//connectToPLCSim();
 
 setInterval(function () {
   if (!bConnected) {
-    //connectToPLC();
+    connectToPLC();
   };
   //console.log("Connected to PLC: " + bConnected);
   plcData["qualitySignal"] = bConnected;
 
-  //getInputs(0, 10);
-  //getOutputs(0, 10);
-  getIOSim();
+  getDataOfSelectedType(0, 10, "inputs", "I", "EBRead");
+  getDataOfSelectedType(0, 10, "outputs", "Q", "ABRead");
+  getDataOfSelectedType(0, 50, "merkers", "M", "MBRead");
+
+  //getIOSim();
 
 }, 500);
 
@@ -29,11 +31,31 @@ function connectToPLC() {
   });
 };
 
-function getInputs(firstByte, numberOfBytes) {
-  s7client.EBRead(firstByte, numberOfBytes, function (err, buffer) {
+function getDataOfSelectedType(firstByte, numberOfBytes, sDataType, sLabel, funcName) {
+
+  switch (funcName) {
+    case "EBRead":
+      s7client.EBRead(firstByte, numberOfBytes, pvtReadBufferFromPLC);
+      break;
+
+    case "ABRead":
+      s7client.ABRead(firstByte, numberOfBytes, pvtReadBufferFromPLC);
+      break;
+
+    case "MBRead":
+      s7client.MBRead(firstByte, numberOfBytes, pvtReadBufferFromPLC);
+      break;
+
+    default:
+      console.log('!Warning!: getDataOfSelectedType() got parameter of non exist function name!');
+      break;
+  }
+
+  // general function in all cases
+  function pvtReadBufferFromPLC(err, buffer) {
     if (err) {
       bConnected = false;
-      return console.log(' >> EBRead failed. Code #' + err + ' - ' + s7client.ErrorText(err));
+      return console.log(' >> ' + funcName + ' failed. Code #' + err + ' - ' + s7client.ErrorText(err));
     }
     else {
       var bits = buffer.toJSON();
@@ -43,28 +65,14 @@ function getInputs(firstByte, numberOfBytes) {
 
       for (var i = firstByte; i < numberOfBytes; i++) {
         // fill global variable
-        plcData["inputs"]["I" + i] = bits.data[i - firstByte].toString(2).padStart(8, '0').split('').reverse();
+        plcData[sDataType][sLabel + i] = bits.data[i - firstByte].toString(2).padStart(8, '0').split('').reverse();
       };
     }
-  });
+  }
 };
 
-function getOutputs(firstByte, numberOfBytes) {
-  s7client.ABRead(firstByte, numberOfBytes, function (err, buffer) {
-    if (err) {
-      bConnected = false;
-      return console.log(' >> ABRead failed. Code #' + err + ' - ' + s7client.ErrorText(err));
-    }
-    else {
-      var bits = buffer.toJSON();
-      for (var i = firstByte; i < numberOfBytes; i++) {
-        // fill global variable
-        plcData["outputs"]["Q" + i] = bits.data[i - firstByte].toString(2).padStart(8, '0').split('').reverse();
-      };
-    }
-  });
-};
-
+//==================================================================================
+// Simulation mode
 function connectToPLCSim() {
   for (i = 0; i < 21; i++) {
     let b0 = (Math.random() > 0.5) ? 1 : 0;
@@ -88,7 +96,7 @@ function getIOSim() {
   plcData["merkers"]["M" + Math.floor((Math.random() * 21))][Math.floor((Math.random() * 7))] = (Math.random() > 0.5) ? 1 : 0;
 
 }
-
+//==================================================================================
 
 module.exports = function () {
 
