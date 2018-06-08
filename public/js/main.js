@@ -3,17 +3,14 @@ $(function () {
   var indicatorsI = document.getElementsByClassName("inputs");
   var indicatorsQ = document.getElementsByClassName("outputs");
   var indicatorsM = document.getElementsByClassName("merkers");
-  
 
   var allInputTags = document.getElementById("all-inputs");
   var allOutputTags = document.getElementById("all-outputs");
   var allMerkerTags = document.getElementById("all-merkers");
-  
 
   var bDoOneTimeI = false;
   var bDoOneTimeQ = false;
   var bDoOneTimeM = false;
-  
 
   $('form').submit(function () {
     socket.emit('chat message', $('#m').val());
@@ -53,50 +50,26 @@ $(function () {
     return bDoOneTime = true;
   }
 
-
-
-  socket.on('test1', function (plcData) {
+  socket.on('readDataFromPLC', function (plcData) {
     //document.getElementById("tickTac").innerHTML = plcData.I20[1];
     //document.getElementById("tickTac").setAttribute("state-color", plcData.I20[1]);
 
-    if (!bDoOneTimeI) {
-      bDoOneTimeI = insertIndicatorTags(plcData, "inputs", allInputTags, bDoOneTimeI);
-    }
+    if (!bDoOneTimeI) { bDoOneTimeI = insertIndicatorTags(plcData, "inputs", allInputTags, bDoOneTimeI); }
+    if (!bDoOneTimeQ) { bDoOneTimeQ = insertIndicatorTags(plcData, "outputs", allOutputTags, bDoOneTimeQ); }
+    if (!bDoOneTimeM) { bDoOneTimeM = insertIndicatorTags(plcData, "merkers", allMerkerTags, bDoOneTimeM); }
 
-    if (!bDoOneTimeQ) {
-      bDoOneTimeQ = insertIndicatorTags(plcData, "outputs", allOutputTags, bDoOneTimeQ);
-    }
+    refreshIndicators(indicatorsI, "inputs");
+    refreshIndicators(indicatorsQ, "outputs");
+    refreshIndicators(indicatorsM, "merkers");
 
-    if (!bDoOneTimeM) {
-      bDoOneTimeM = insertIndicatorTags(plcData, "merkers", allMerkerTags, bDoOneTimeM);
-    }
-    
-
-    var index = 0;
-    for (var currentByte in plcData["inputs"]) {
-      for (var bit = 0; bit <= 7; bit++) {
-        indicatorsI[index].setAttribute("state-color", plcData["inputs"][currentByte][bit]);
-        //console.log(index);
-        index++;
-      }
-    }
-
-    index = 0;
-    for (var currentByte in plcData["outputs"]) {
-      for (var bit = 0; bit <= 7; bit++) {
-        //console.log(index);
-        indicatorsQ[index].setAttribute("state-color", plcData["outputs"][currentByte][bit]);
-        index++;
-      }
-    }
-
-    index = 0;
-    for (var currentByte in plcData["merkers"]) {
-      for (var bit = 0; bit <= 7; bit++) {
-        //console.log(index);
-        indicatorsM[index].setAttribute("state-color", plcData["merkers"][currentByte][bit]);
-        index++;
-      }
+    function refreshIndicators(arrList, sDataType) {
+      var index = 0;
+      for (var currentByte in plcData[sDataType]) {
+        for (var bit = 0; bit <= 7; bit++) {
+          arrList[index].setAttribute("state-color", plcData[sDataType][currentByte][bit]);
+          index++;
+        }
+      };
     }
 
     // change color of html tag
