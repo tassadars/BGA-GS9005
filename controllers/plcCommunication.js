@@ -2,20 +2,20 @@ var m_snap7 = require('node-snap7');
 var s7client = new snap7.S7Client();
 var bConnected = false;
 
-//connectToPLCSim();
+connectToPLCSim();
 
 setInterval(function () {
   if (!bConnected) {
-    connectToPLC();
+    //connectToPLC();
   };
   //console.log("Connected to PLC: " + bConnected);
   plcData["qualitySignal"] = bConnected;
 
-  getDataOfSelectedType(0, 10, "inputs", "I", "EBRead");
-  getDataOfSelectedType(0, 10, "outputs", "Q", "ABRead");
-  getDataOfSelectedType(0, 50, "merkers", "M", "MBRead");
+  //getDataOfSelectedType(0, 10, "inputs", "I", "EBRead");
+  //getDataOfSelectedType(0, 10, "outputs", "Q", "ABRead");
+  //getDataOfSelectedType(0, 50, "merkers", "M", "MBRead");
 
-  //getIOSim();
+  getIOSim();
 
 }, 500);
 
@@ -74,7 +74,7 @@ function getDataOfSelectedType(firstByte, numberOfBytes, sDataType, sLabel, func
 //==================================================================================
 // Simulation mode
 function connectToPLCSim() {
-  for (i = 0; i < 21; i++) {
+  for (i = 0; i < 121; i++) {
     let b0 = (Math.random() > 0.5) ? 1 : 0;
     let b1 = (Math.random() > 0.5) ? 1 : 0;
     let b2 = (Math.random() > 0.5) ? 1 : 0;

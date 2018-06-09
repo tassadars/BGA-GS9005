@@ -8,6 +8,8 @@ global.plcData = {
 };
 
 var mainPageController = require('./controllers/mainPageController.js');
+var mapfieldPageController = require('./controllers/mapfieldPageController.js');
+
 var plcCommunication = require('./controllers/plcCommunication.js');
 var socketReadEvents = require('./events/socketRead.js');
 
@@ -24,6 +26,7 @@ app.set('view engine', 'ejs');
 
 //fire controllers
 mainPageController(app);
+mapfieldPageController(app);
 plcCommunication();
 socketReadEvents(io);
 //todoController(app);
