@@ -32,6 +32,7 @@ $(function () {
       for (var bit = 0; bit <= 7; bit++) {
         tDiv.setAttribute("state-color", plcData[plcDataType][currentByte][bit]);
         //tPbit.innerHTML = bit;
+        tDiv.title = currentByte + '.' + bit;
         fatherTag.appendChild(tDiv.cloneNode(true));
       }
     }
