@@ -84,6 +84,12 @@ h2 {
     background-color: grey;
 }
 
+.indicator:hover {
+    border-style: solid;
+    border-color: red;
+    border-width: 1px;
+}
+
 /* for text */
 
 p[state-color="3"] {
