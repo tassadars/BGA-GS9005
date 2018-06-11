@@ -9,7 +9,7 @@ setInterval(function () {
     connectToPLC();
 
     //console.log("set test bit");
-    //setBitDataOfSelectedType(100.3, "EBWrite");
+    //setBitDataOfSelectedType(203.2, "ABWrite");
   };
   //console.log("Connected to PLC: " + bConnected);
   plcData["qualitySignal"] = bConnected;
@@ -18,7 +18,7 @@ setInterval(function () {
   getDataOfSelectedType(20, 30, "inputs", "I", "EBRead");
   getDataOfSelectedType(20, 12, "outputs", "Q", "ABRead");
   getDataOfSelectedType(40, 22, "merkers", "M", "MBRead");
-  
+
   //  getIOSim();
 
 }, 500);
@@ -42,33 +42,37 @@ function setBitDataOfSelectedType(byteDotBitValue, funcName) {
   }
   catch (error) {
     console.log('!Warning!: setBitDataOfSelectedType() got parameter of non exist function name!');
-    break;
+    return;
   }
 
   if (arrValue.length != 2 || arrValue[1] < 0 || arrValue[1] > 7) {
     console.log('!Warning!: setBitDataOfSelectedType() got parameter of non exist function name!');
-    break;
+    return;
   }
   var bitToChange = parseInt(arrValue[0]) * 8 + parseInt(arrValue[1]);
 
   switch (funcName) {
     case "EBWrite":
-      s7client.WriteArea(s7client.S7AreaPE, 0, bitToChange, 1, s7client.S7WLBit, new Buffer([0x01]), function (err) {
-        if (err) {
-          return console.log(' >> ' + funcName + ' failed. Code #' + err + ' - ' + s7client.ErrorText(err));
-        }
-      });
+      s7client.WriteArea(s7client.S7AreaPE, 0, bitToChange, 1, s7client.S7WLBit, new Buffer([0x01]), pvtErrorFunc);
       break;
 
     case "ABWrite":
+      s7client.WriteArea(s7client.S7AreaPA, 0, bitToChange, 1, s7client.S7WLBit, new Buffer([0x01]), pvtErrorFunc);
       break;
 
     case "MBWrite":
+      s7client.WriteArea(s7client.S7AreaMK, 0, bitToChange, 1, s7client.S7WLBit, new Buffer([0x01]), pvtErrorFunc);
       break;
 
     default:
       console.log('!Warning!: setBitDataOfSelectedType() got parameter of non exist function name!');
       break;
+  }
+
+  function pvtErrorFunc(err) {
+    if (err) {
+      return console.log(' >> ' + funcName + ' failed. Code #' + err + ' - ' + s7client.ErrorText(err));
+    }
   }
 }
 
