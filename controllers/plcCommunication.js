@@ -7,14 +7,17 @@ var bConnected = false;
 setInterval(function () {
   if (!bConnected) {
     connectToPLC();
+    
+    //console.log("set test bit");
+    //setBitDataOfSelectedType(100.3, "EBWrite");
   };
   //console.log("Connected to PLC: " + bConnected);
   plcData["qualitySignal"] = bConnected;
 
   // s7-400 I=412, Q=401, M= 10002 Set these max values
-  getDataOfSelectedType(0, 42, "inputs", "I", "EBRead");
-  getDataOfSelectedType(0, 41, "outputs", "Q", "ABRead");
-  getDataOfSelectedType(0, 12, "merkers", "M", "MBRead");
+  getDataOfSelectedType(20, 42, "inputs", "I", "EBRead");
+  getDataOfSelectedType(20, 41, "outputs", "Q", "ABRead");
+  getDataOfSelectedType(10, 12, "merkers", "M", "MBRead");
 
   //  getIOSim();
 
@@ -31,6 +34,43 @@ function connectToPLC() {
     bConnected = true;
   });
 };
+
+function setBitDataOfSelectedType(byteDotBitValue, funcName) {
+  switch (funcName) {
+    case "EBWrite":
+      try {
+        var arrValue = byteDotBitValue.toString().split(".");
+      }
+      catch (error) {
+        console.log('!Warning!: setBitDataOfSelectedType() got parameter of non exist function name!');
+        break;
+      }
+      
+      if (arrValue.length != 2 || arrValue[1] < 0 || arrValue[1] > 7) {
+        console.log('!Warning!: setBitDataOfSelectedType() got parameter of non exist function name!');
+        break;
+      }
+
+      var bitToChange = parseInt(arrValue[0]) * 8 + parseInt(arrValue[1]);
+
+      s7client.WriteArea(s7client.S7AreaPE, 0, bitToChange, 1, s7client.S7WLBit, new Buffer([0x01]), function (err) {
+        if (err) {
+          return console.log(' >> ' + funcName + ' failed. Code #' + err + ' - ' + s7client.ErrorText(err));
+        }
+      });
+      break;
+
+    case "ABWrite":
+      break;
+
+    case "MBWrite":
+      break;
+
+    default:
+      console.log('!Warning!: setBitDataOfSelectedType() got parameter of non exist function name!');
+      break;
+  }
+}
 
 function getDataOfSelectedType(firstByte, numberOfBytes, sDataType, sLabel, funcName) {
 
