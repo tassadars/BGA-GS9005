@@ -19,6 +19,7 @@ $(function () {
   });
 
   function insertIndicatorTags(plcData, plcDataType, fatherTag, bDoOneTime) {
+    var tDivLine = document.createElement('div');
     var tDivCaption = document.createElement('div');
     var tP = document.createElement('p');
 
@@ -27,6 +28,10 @@ $(function () {
 
     var tBr = document.createElement('br');
 
+    tDivLine.className = "inline";
+    tDivLine.style.visibility = "hidden";
+
+
     tDivCaption.className = "indicatorCaption inline";
     tP.className = "tagMark";
     tDiv.className = "indicator inline " + plcDataType;
@@ -34,18 +39,26 @@ $(function () {
     tBr.className = "clearBoth";
 
     tDivCaption.appendChild(tP);
-    tDiv.appendChild(tPbit);
+    tDiv.appendChild(tPbit).cloneNode(true);
+    
+    tDivLine.appendChild(tDivCaption);
+    
+    for (var bit = 0; bit <= 7; bit++) {
+      tDiv.lastChild.innerText = bit;
+      tDivLine.appendChild(tDiv.cloneNode(true));
+    }
 
     for (var currentByte in plcData[plcDataType]) {
-      tP.innerText = currentByte;
-      fatherTag.appendChild(tDivCaption.cloneNode(true));
-
+      tP.innerText = currentByte;      
       for (var bit = 0; bit <= 7; bit++) {
-        tDiv.setAttribute("state-color", plcData[plcDataType][currentByte][bit]);
-        tPbit.innerHTML = bit;
-        fatherTag.appendChild(tDiv.cloneNode(true));
+        tDivLine.childNodes[bit].setAttribute("state-color", plcData[plcDataType][currentByte][bit]);
       }
-      fatherTag.appendChild(tBr.cloneNode(true));
+      if (parseInt(plcData[plcDataType][currentByte]) > 0) {
+        // FIX CONDITION!!!!
+        tDivLine.style.visibility = "visible";
+      }
+      fatherTag.appendChild(tDivLine.cloneNode(true));
+      //fatherTag.appendChild(tBr.cloneNode(true));
     }
     return bDoOneTime = true;
   }

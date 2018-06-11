@@ -162,7 +162,7 @@ p.tagMark {
     position: relative;
     margin: 0px;
     margin-left: -20px;
-    margin-top: -3px;
+    margin-top: 2px;
     font-size: 11px;
     color:  rgb(0,255,0);
 }
@@ -178,6 +178,11 @@ p.bitMark {
 
 .clearBoth {
     clear:both;
+}
+
+.col-sm-3, .col-sm-4 {
+    min-width: 200px;
+    max-width: 250px;
 }
 
 /*  */
