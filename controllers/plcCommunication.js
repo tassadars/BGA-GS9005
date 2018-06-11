@@ -7,7 +7,7 @@ var bConnected = false;
 setInterval(function () {
   if (!bConnected) {
     connectToPLC();
-    
+
     //console.log("set test bit");
     //setBitDataOfSelectedType(100.3, "EBWrite");
   };
@@ -15,10 +15,10 @@ setInterval(function () {
   plcData["qualitySignal"] = bConnected;
 
   // s7-400 I=412, Q=401, M= 10002 Set these max values
-  getDataOfSelectedType(20, 42, "inputs", "I", "EBRead");
-  getDataOfSelectedType(20, 41, "outputs", "Q", "ABRead");
-  getDataOfSelectedType(10, 12, "merkers", "M", "MBRead");
-
+  getDataOfSelectedType(20, 30, "inputs", "I", "EBRead");
+  getDataOfSelectedType(20, 12, "outputs", "Q", "ABRead");
+  getDataOfSelectedType(40, 22, "merkers", "M", "MBRead");
+  
   //  getIOSim();
 
 }, 500);
@@ -36,23 +36,23 @@ function connectToPLC() {
 };
 
 function setBitDataOfSelectedType(byteDotBitValue, funcName) {
+  // parse number of bit to be modified
+  try {
+    var arrValue = byteDotBitValue.toString().split(".");
+  }
+  catch (error) {
+    console.log('!Warning!: setBitDataOfSelectedType() got parameter of non exist function name!');
+    break;
+  }
+
+  if (arrValue.length != 2 || arrValue[1] < 0 || arrValue[1] > 7) {
+    console.log('!Warning!: setBitDataOfSelectedType() got parameter of non exist function name!');
+    break;
+  }
+  var bitToChange = parseInt(arrValue[0]) * 8 + parseInt(arrValue[1]);
+
   switch (funcName) {
     case "EBWrite":
-      try {
-        var arrValue = byteDotBitValue.toString().split(".");
-      }
-      catch (error) {
-        console.log('!Warning!: setBitDataOfSelectedType() got parameter of non exist function name!');
-        break;
-      }
-      
-      if (arrValue.length != 2 || arrValue[1] < 0 || arrValue[1] > 7) {
-        console.log('!Warning!: setBitDataOfSelectedType() got parameter of non exist function name!');
-        break;
-      }
-
-      var bitToChange = parseInt(arrValue[0]) * 8 + parseInt(arrValue[1]);
-
       s7client.WriteArea(s7client.S7AreaPE, 0, bitToChange, 1, s7client.S7WLBit, new Buffer([0x01]), function (err) {
         if (err) {
           return console.log(' >> ' + funcName + ' failed. Code #' + err + ' - ' + s7client.ErrorText(err));
@@ -104,7 +104,7 @@ function getDataOfSelectedType(firstByte, numberOfBytes, sDataType, sLabel, func
       // console.log(parseInt(bits.data[0].toString(2), 2));
       // console.log(bits.data[0].toString(2).padStart(8, '0').split('').reverse());
 
-      for (var i = firstByte; i < numberOfBytes; i++) {
+      for (var i = firstByte; i < firstByte + numberOfBytes; i++) {
         // fill global variable
         plcData[sDataType][sLabel + i] = bits.data[i - firstByte].toString(2).padStart(8, '0').split('').reverse();
       };
