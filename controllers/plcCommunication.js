@@ -2,20 +2,21 @@ var m_snap7 = require('node-snap7');
 var s7client = new snap7.S7Client();
 var bConnected = false;
 
-connectToPLCSim();
+//connectToPLCSim();
 
 setInterval(function () {
   if (!bConnected) {
-    //connectToPLC();
+    connectToPLC();
   };
   //console.log("Connected to PLC: " + bConnected);
   plcData["qualitySignal"] = bConnected;
 
-  //getDataOfSelectedType(0, 10, "inputs", "I", "EBRead");
-  //getDataOfSelectedType(0, 10, "outputs", "Q", "ABRead");
-  //getDataOfSelectedType(0, 50, "merkers", "M", "MBRead");
+  // s7-400 I=412, Q=401, M= 10002 Set these max values
+  getDataOfSelectedType(0, 42, "inputs", "I", "EBRead");
+  getDataOfSelectedType(0, 41, "outputs", "Q", "ABRead");
+  getDataOfSelectedType(0, 12, "merkers", "M", "MBRead");
 
-  getIOSim();
+  //  getIOSim();
 
 }, 500);
 
