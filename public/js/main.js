@@ -29,7 +29,7 @@ $(function () {
     var tBr = document.createElement('br');
 
     tDivLine.className = "inline";
-    tDivLine.style.visibility = "hidden";
+    tDivLine.style.display = "none";
 
 
     tDivCaption.className = "indicatorCaption inline";
@@ -40,24 +40,28 @@ $(function () {
 
     tDivCaption.appendChild(tP);
     tDiv.appendChild(tPbit).cloneNode(true);
-    
+
     tDivLine.appendChild(tDivCaption);
-    
+    // set text captions for bits from 0 to 7
     for (var bit = 0; bit <= 7; bit++) {
       tDiv.lastChild.innerText = bit;
       tDivLine.appendChild(tDiv.cloneNode(true));
     }
 
+    // process all received data from PLC and display it
     for (var currentByte in plcData[plcDataType]) {
-      tP.innerText = currentByte;      
+      tP.innerText = currentByte;
       for (var bit = 0; bit <= 7; bit++) {
-        tDivLine.childNodes[bit].setAttribute("state-color", plcData[plcDataType][currentByte][bit]);
+        // start from index 1, index 0 is under tDivCaption
+        tDivLine.childNodes[bit + 1].setAttribute("state-color", plcData[plcDataType][currentByte][bit]);
       }
-      if (parseInt(plcData[plcDataType][currentByte]) > 0) {
-        // FIX CONDITION!!!!
-        tDivLine.style.visibility = "visible";
-      }
+
       fatherTag.appendChild(tDivLine.cloneNode(true));
+
+      if (parseInt(plcData[plcDataType][currentByte].join('')) > 0) {
+        // FIX CONDITION!!!!
+        fatherTag.lastChild.style.display = "block";
+      }
       //fatherTag.appendChild(tBr.cloneNode(true));
     }
     return bDoOneTime = true;
