@@ -17,7 +17,7 @@ setInterval(function () {
   // s7-400 I=412, Q=401, M= 10002 Set these max values
   getDataOfSelectedType(00, 412, "inputs", "I", "EBRead");
   getDataOfSelectedType(00, 401, "outputs", "Q", "ABRead");
-  getDataOfSelectedType(00, 10002, "merkers", "M", "MBRead");
+  getDataOfSelectedType(00, 102, "merkers", "M", "MBRead");
 
   //  getIOSim();
 

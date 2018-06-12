@@ -59,7 +59,6 @@ $(function () {
       fatherTag.appendChild(tDivLine.cloneNode(true));
 
       if (parseInt(plcData[plcDataType][currentByte].join('')) > 0) {
-        // FIX CONDITION!!!!
         fatherTag.lastChild.style.display = "block";
       }
       //fatherTag.appendChild(tBr.cloneNode(true));
@@ -81,10 +80,18 @@ $(function () {
 
     function refreshIndicators(arrList, sDataType) {
       var index = 0;
+
       for (var currentByte in plcData[sDataType]) {
+
         for (var bit = 0; bit <= 7; bit++) {
           arrList[index].setAttribute("state-color", plcData[sDataType][currentByte][bit]);
           index++;
+        }
+
+        // show indicator line if there at least some bit was set to 1
+        if (parseInt(plcData[sDataType][currentByte].join('')) > 0) {
+          // index was incremented to next indicator line, get previous element as -1
+          arrList[index-1].parentElement.style.display = "block";        
         }
       };
     }
