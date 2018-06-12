@@ -9,7 +9,7 @@ setInterval(function () {
     connectToPLC();
 
     //console.log("set test bit");
-    //setBitDataOfSelectedType(203.2, "ABWrite");
+    //setBitDataOfSelectedType(20.2, "EBWrite", false);
   };
   //console.log("Connected to PLC: " + bConnected);
   plcData["qualitySignal"] = bConnected;
@@ -35,7 +35,7 @@ function connectToPLC() {
   });
 };
 
-function setBitDataOfSelectedType(byteDotBitValue, funcName) {
+function setBitDataOfSelectedType(byteDotBitValue, funcName, bValue) {
   // parse number of bit to be modified
   try {
     var arrValue = byteDotBitValue.toString().split(".");
@@ -51,17 +51,25 @@ function setBitDataOfSelectedType(byteDotBitValue, funcName) {
   }
   var bitToChange = parseInt(arrValue[0]) * 8 + parseInt(arrValue[1]);
 
+  // if true - set to 1
+  if (bValue) {
+    vBuffer = new Buffer([0x01]);
+  // if false - set to 0
+  } else {
+    vBuffer = new Buffer([0x00]);
+  }
+
   switch (funcName) {
     case "EBWrite":
-      s7client.WriteArea(s7client.S7AreaPE, 0, bitToChange, 1, s7client.S7WLBit, new Buffer([0x01]), pvtErrorFunc);
+      s7client.WriteArea(s7client.S7AreaPE, 0, bitToChange, 1, s7client.S7WLBit, vBuffer, pvtErrorFunc);
       break;
 
     case "ABWrite":
-      s7client.WriteArea(s7client.S7AreaPA, 0, bitToChange, 1, s7client.S7WLBit, new Buffer([0x01]), pvtErrorFunc);
+      s7client.WriteArea(s7client.S7AreaPA, 0, bitToChange, 1, s7client.S7WLBit, vBuffer, pvtErrorFunc);
       break;
 
     case "MBWrite":
-      s7client.WriteArea(s7client.S7AreaMK, 0, bitToChange, 1, s7client.S7WLBit, new Buffer([0x01]), pvtErrorFunc);
+      s7client.WriteArea(s7client.S7AreaMK, 0, bitToChange, 1, s7client.S7WLBit, vBuffer, pvtErrorFunc);
       break;
 
     default:
