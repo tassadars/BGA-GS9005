@@ -2,6 +2,7 @@ var m_snap7 = require('node-snap7');
 var s7client = new snap7.S7Client();
 var bConnected = false;
 
+fillPLCConnectionList();
 //connectToPLCSim();
 
 setInterval(function () {
@@ -17,7 +18,7 @@ setInterval(function () {
   // s7-400 I=412, Q=401, M= 10002 Set these max values
   getDataOfSelectedType(00, 412, "inputs", "I", "EBRead");
   getDataOfSelectedType(00, 401, "outputs", "Q", "ABRead");
-  getDataOfSelectedType(00, 102, "merkers", "M", "MBRead");
+  getDataOfSelectedType(00, 1002, "merkers", "M", "MBRead");
 
   //  getIOSim();
 
@@ -124,6 +125,17 @@ function getDataOfSelectedType(firstByte, numberOfBytes, sDataType, sLabel, func
   }
 };
 
+//==================================================================================
+// comment out this block when data will be stored in DB
+function fillPLCConnectionList(){
+  plcData["plcs"].push({ name: "BGA_GS9031", ip: "192.168.0.70", slot:"0", rack:"4", room: "II/139" });
+  plcData["plcs"].push({ name: "AAA_GS9030", ip: "192.168.0.10", slot:"0", rack:"2", room: "I/204" });
+  plcData["plcs"].push({ name: "BFA_GS9030", ip: "192.168.0.30", slot:"0", rack:"2", room: "II/109" });
+  plcData["plcs"].push({ name: "BGA_GS9020", ip: "192.168.0.1", slot:"0", rack:"2", room: "II/139" });
+  plcData["plcs"].push({ name: "BKA_GS9031", ip: "192.168.0.50", slot:"0", rack:"2", room: "II/122" });
+  // !!!do not use in debug-mode, X-Cooler running, need protection
+  //plcData["plcs"].push({ name: "BHH_GS9034", ip: "192.168.0.60", slot:"0", rack:"2", room: "I/230" });
+}
 //==================================================================================
 // Simulation mode
 function connectToPLCSim() {
