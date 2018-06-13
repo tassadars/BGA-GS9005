@@ -128,11 +128,11 @@ function getDataOfSelectedType(firstByte, numberOfBytes, sDataType, sLabel, func
 //==================================================================================
 // comment out this block when data will be stored in DB
 function fillPLCConnectionList(){
-  plcData["plcs"].push({ name: "BGA_GS9031", ip: "192.168.0.70", slot:"0", rack:"4", room: "II/139" });
-  plcData["plcs"].push({ name: "AAA_GS9030", ip: "192.168.0.10", slot:"0", rack:"2", room: "I/204" });
-  plcData["plcs"].push({ name: "BFA_GS9030", ip: "192.168.0.30", slot:"0", rack:"2", room: "II/109" });
-  plcData["plcs"].push({ name: "BGA_GS9020", ip: "192.168.0.1", slot:"0", rack:"2", room: "II/139" });
-  plcData["plcs"].push({ name: "BKA_GS9031", ip: "192.168.0.50", slot:"0", rack:"2", room: "II/122" });
+  configData["plcs"].push({ name: "BGA_GS9031", ip: "192.168.0.70", slot:"0", rack:"4", room: "II/139" });
+  configData["plcs"].push({ name: "AAA_GS9030", ip: "192.168.0.10", slot:"0", rack:"2", room: "I/204" });
+  configData["plcs"].push({ name: "BFA_GS9030", ip: "192.168.0.30", slot:"0", rack:"2", room: "II/109" });
+  configData["plcs"].push({ name: "BGA_GS9020", ip: "192.168.0.1", slot:"0", rack:"2", room: "II/139" });
+  configData["plcs"].push({ name: "BKA_GS9031", ip: "192.168.0.50", slot:"0", rack:"2", room: "II/122" });
   // !!!do not use in debug-mode, X-Cooler running, need protection
   //plcData["plcs"].push({ name: "BHH_GS9034", ip: "192.168.0.60", slot:"0", rack:"2", room: "I/230" });
 }

@@ -1,10 +1,14 @@
-// global variable
+// global variable, send in cycle
 global.plcData = {
   inputs: {},
   outputs: {},
   merkers: {},
   dbs: {},
-  qualitySignal: false,
+  qualitySignal: false
+};
+
+// one time send variable
+global.configData = {
   plcs: []
 };
 
@@ -34,7 +38,7 @@ socketReadEvents(io);
 //converterController(app);
 
 //listen to port
-http.listen(3000, function (){
+http.listen(3000, function () {
   console.log('You are listening to port 3000');
 });
 
