@@ -23,6 +23,9 @@ module.exports = function (io) {
       console.log('user disconnected');
     });
 
+    // send config data to the client (one time action)
+    io.emit('configData', configData);
+
     clearInterval(checkInterval);
     checkInterval = setInterval(function () {
       io.emit('readDataFromPLC', plcData);    

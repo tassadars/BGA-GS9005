@@ -12,6 +12,7 @@ $(function () {
   var bDoOneTimeQ = false;
   var bDoOneTimeM = false;
 
+
   $('form').submit(function () {
     socket.emit('chat message', $('#m').val());
     $('#m').val('');
@@ -66,6 +67,23 @@ $(function () {
     return bDoOneTime = true;
   }
 
+  // get data from server of PLC list to connect 
+  socket.on('configData', function (configData) {
+    var tListBox = document.getElementById("inputGroupSelectPLC");
+    var tOption = document.createElement("option");
+
+    for (var currentPLC in configData['plcs']) {
+      tOption.text = configData['plcs'][currentPLC].name;
+      tOption.value = configData['plcs'][currentPLC].ip;
+      tListBox.options.add(tOption.cloneNode(true));
+    }
+
+    // configData["plcs"].push({ name: "BGA_GS9031", ip: "192.168.0.70", slot:"0", rack:"4", room: "II/139" });
+ 
+
+    //console.log(configData);
+  });
+
   socket.on('readDataFromPLC', function (plcData) {
     //document.getElementById("tickTac").innerHTML = plcData.I20[1];
     //document.getElementById("tickTac").setAttribute("state-color", plcData.I20[1]);
@@ -91,7 +109,7 @@ $(function () {
         // show indicator line if there at least some bit was set to 1
         if (parseInt(plcData[sDataType][currentByte].join('')) > 0) {
           // index was incremented to next indicator line, get previous element as -1
-          arrList[index-1].parentElement.style.display = "block";        
+          arrList[index - 1].parentElement.style.display = "block";
         }
       };
     }
