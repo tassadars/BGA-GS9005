@@ -19,6 +19,11 @@ $(function () {
     return false;
   });
 
+  document.getElementById("btnConnectPLC").onclick = function () {
+    socket.emit('selectedPLCByClient', "Connection request" );
+    this.getElementsByTagName("label")[0].innerHTML = "Disconnect";
+  };
+
   function insertIndicatorTags(plcData, plcDataType, fatherTag, bDoOneTime) {
     var tDivLine = document.createElement('div');
     var tDivCaption = document.createElement('div');
@@ -75,13 +80,13 @@ $(function () {
     for (var currentPLC in configData['plcs']) {
       tOption.text = configData['plcs'][currentPLC].name;
       tOption.value = configData['plcs'][currentPLC].ip;
+      //tOption.setAttribute("rack", configData['plcs'][currentPLC].rack);
+
       tListBox.options.add(tOption.cloneNode(true));
     }
-
+    // example of data
     // configData["plcs"].push({ name: "BGA_GS9031", ip: "192.168.0.70", slot:"0", rack:"4", room: "II/139" });
- 
-
-    //console.log(configData);
+    console.log("Client got configuration data");
   });
 
   socket.on('readDataFromPLC', function (plcData) {

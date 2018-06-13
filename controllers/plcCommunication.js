@@ -16,9 +16,9 @@ setInterval(function () {
   plcData["qualitySignal"] = bConnected;
 
   // s7-400 I=412, Q=401, M= 10002 Set these max values
-  getDataOfSelectedType(00, 412, "inputs", "I", "EBRead");
-  getDataOfSelectedType(00, 401, "outputs", "Q", "ABRead");
-  getDataOfSelectedType(00, 1002, "merkers", "M", "MBRead");
+  getDataOfSelectedType(00, 42, "inputs", "I", "EBRead");
+  getDataOfSelectedType(00, 41, "outputs", "Q", "ABRead");
+  getDataOfSelectedType(00, 12, "merkers", "M", "MBRead");
 
   //  getIOSim();
 

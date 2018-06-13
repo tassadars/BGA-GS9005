@@ -23,6 +23,11 @@ module.exports = function (io) {
       console.log('user disconnected');
     });
 
+    socket.on('selectedPLCByClient', function (msg) {
+      console.log("Message from client: " + msg);
+    });
+
+
     // send config data to the client (one time action)
     io.emit('configData', configData);
 
