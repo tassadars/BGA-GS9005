@@ -20,7 +20,7 @@ $(function () {
   });
 
   document.getElementById("btnConnectPLC").onclick = function () {
-    socket.emit('selectedPLCByClient', "Connection request" );
+    socket.emit('selectedPLCByClient', $('#inputGroupSelectPLC').val());
     this.getElementsByTagName("label")[0].innerHTML = "Disconnect";
   };
 
