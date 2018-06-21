@@ -24,6 +24,7 @@ $(function () {
     if (this.getElementsByTagName("label")[0].innerHTML == "Connect") {
       // click to connect
       this.getElementsByTagName("label")[0].innerHTML = "Disconnect";
+      document.getElementById("inputGroupSelectPLC").setAttribute("disabled", true);
 
       bDoOneTimeI = false;
       bDoOneTimeQ = false;
@@ -34,6 +35,7 @@ $(function () {
     else {
       // click to disconnect
       this.getElementsByTagName("label")[0].innerHTML = "Connect";
+      document.getElementById("inputGroupSelectPLC").removeAttribute("disabled");      
       socket.emit('selectedPLCByClient', "PLC disconnect");
     }
   }
@@ -107,18 +109,17 @@ $(function () {
 
     // check if plc is connected
     if (configData["status"] == "PLC disconnect") {
-      console.log("disabled false");
+      //console.log("disabled false");
     } else {
       tListBox.setAttribute("disabled", true);
-
       for (let option of tListBox.options) {
         // if ip address of plc in run the same as in list
-        if (option.value == configData["status"] ) {
+        if (option.value == configData["status"]) {
           option.selected = true;
           document.getElementById("btnTxtConnectPLC").innerHTML = "Disconnect";
         }
       }
-      console.log("disabled true");
+      //console.log("disabled true");
     }
 
     console.log("Client got configuration data");
