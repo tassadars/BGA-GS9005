@@ -9,7 +9,8 @@ global.plcData = {
 
 // one time send variable
 global.configData = {
-  plcs: []
+  plcs: [],
+  status: "PLC disconnect"
 };
 
 var mainPageController = require('./controllers/mainPageController.js');

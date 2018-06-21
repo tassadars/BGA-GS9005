@@ -23,10 +23,17 @@ $(function () {
   document.getElementById("btnConnectPLC").onclick = function () {
 
     if (this.getElementsByTagName("label")[0].innerHTML == "Connect") {
+      // click to connect
       this.getElementsByTagName("label")[0].innerHTML = "Disconnect";
+      
+      bDoOneTimeI = false;
+      bDoOneTimeQ = false;
+      bDoOneTimeM = false;
+
       socket.emit('selectedPLCByClient', $('#inputGroupSelectPLC').val());
     }
     else {
+      // click to disconnect
       this.getElementsByTagName("label")[0].innerHTML = "Connect";
       socket.emit('selectedPLCByClient', "PLC disconnect");
     }
@@ -60,6 +67,11 @@ $(function () {
     for (var bit = 0; bit <= 7; bit++) {
       tDiv.lastChild.innerText = bit;
       tDivLine.appendChild(tDiv.cloneNode(true));
+    }
+
+    // clean fatherTag from child nodes
+    while (fatherTag.hasChildNodes()) {
+      fatherTag.removeChild(fatherTag.firstChild);
     }
 
     // process all received data from PLC and display it
@@ -101,13 +113,18 @@ $(function () {
     //document.getElementById("tickTac").innerHTML = plcData.I20[1];
     //document.getElementById("tickTac").setAttribute("state-color", plcData.I20[1]);
 
-    if (!bDoOneTimeI) { bDoOneTimeI = insertIndicatorTags(plcData, "inputs", allInputTags, bDoOneTimeI); }
-    if (!bDoOneTimeQ) { bDoOneTimeQ = insertIndicatorTags(plcData, "outputs", allOutputTags, bDoOneTimeQ); }
-    if (!bDoOneTimeM) { bDoOneTimeM = insertIndicatorTags(plcData, "merkers", allMerkerTags, bDoOneTimeM); }
+    if (plcData["qualitySignal"]) {
 
-    refreshIndicators(indicatorsI, "inputs");
-    refreshIndicators(indicatorsQ, "outputs");
-    refreshIndicators(indicatorsM, "merkers");
+      //console.log('quality good');
+
+      if (!bDoOneTimeI) { bDoOneTimeI = insertIndicatorTags(plcData, "inputs", allInputTags, bDoOneTimeI); }
+      if (!bDoOneTimeQ) { bDoOneTimeQ = insertIndicatorTags(plcData, "outputs", allOutputTags, bDoOneTimeQ); }
+      if (!bDoOneTimeM) { bDoOneTimeM = insertIndicatorTags(plcData, "merkers", allMerkerTags, bDoOneTimeM); }
+
+      refreshIndicators(indicatorsI, "inputs");
+      refreshIndicators(indicatorsQ, "outputs");
+      refreshIndicators(indicatorsM, "merkers");
+    }
 
     function refreshIndicators(arrList, sDataType) {
       var index = 0;

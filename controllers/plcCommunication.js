@@ -15,6 +15,12 @@ setInterval(function () {
   //console.log("Connected to PLC: " + bConnected);
   plcData["qualitySignal"] = bConnected;
 
+  if (configData["status"] == "PLC disconnect") {
+    s7client.Disconnect();
+    bConnected = false;
+    return 0;
+  }  
+
   // s7-400 I=412, Q=401, M= 10002 Set these max values
   getDataOfSelectedType(00, 42, "inputs", "I", "EBRead");
   getDataOfSelectedType(00, 41, "outputs", "Q", "ABRead");
@@ -25,9 +31,15 @@ setInterval(function () {
 }, 500);
 
 function connectToPLC() {
-  // connect to S7-400
+
+  // get index of selected plc in object array for taking params
+  let index = configData["plcs"].findIndex( x => x.ip == configData["status"]);
+  // if disconnect status exit from function
+  if (index == -1) return 0;
+
+  // connect to S7-300/400
   console.log("Right before CALL s7client.ConnectTo function");
-  s7client.ConnectTo('192.168.0.70', 0, 4, function (err) {
+  s7client.ConnectTo(configData["plcs"][index].ip, configData["plcs"][index].slot, configData["plcs"][index].rack, function (err) {
     if (err) {
       bConnected = false;
       return console.log(' >> Connection failed. Code #' + err + ' - ' + s7client.ErrorText(err));
@@ -128,11 +140,11 @@ function getDataOfSelectedType(firstByte, numberOfBytes, sDataType, sLabel, func
 //==================================================================================
 // comment out this block when data will be stored in DB
 function fillPLCConnectionList(){
-  configData["plcs"].push({ name: "BGA_GS9031", ip: "192.168.0.70", slot:"0", rack:"4", room: "II/139" });
-  configData["plcs"].push({ name: "AAA_GS9030", ip: "192.168.0.10", slot:"0", rack:"2", room: "I/204" });
-  configData["plcs"].push({ name: "BFA_GS9030", ip: "192.168.0.30", slot:"0", rack:"2", room: "II/109" });
-  configData["plcs"].push({ name: "BGA_GS9020", ip: "192.168.0.1", slot:"0", rack:"2", room: "II/139" });
-  configData["plcs"].push({ name: "BKA_GS9031", ip: "192.168.0.50", slot:"0", rack:"2", room: "II/122" });
+  configData["plcs"].push({ name: "BGA_GS9031", ip: "192.168.0.70", slot:0, rack:4, room: "II/139" });
+  configData["plcs"].push({ name: "AAA_GS9030", ip: "192.168.0.10", slot:0, rack:2, room: "I/204" });
+  configData["plcs"].push({ name: "BFA_GS9030", ip: "192.168.0.30", slot:0, rack:2, room: "II/109" });
+  configData["plcs"].push({ name: "BGA_GS9020", ip: "192.168.0.1", slot:0, rack:2, room: "II/139" });
+  configData["plcs"].push({ name: "BKA_GS9031", ip: "192.168.0.50", slot:0, rack:2, room: "II/122" });
   // !!!do not use in debug-mode, X-Cooler running, need protection
   //plcData["plcs"].push({ name: "BHH_GS9034", ip: "192.168.0.60", slot:"0", rack:"2", room: "I/230" });
 }
