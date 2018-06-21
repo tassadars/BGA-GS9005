@@ -19,10 +19,18 @@ $(function () {
     return false;
   });
 
+  // click button Connect / Disconnect
   document.getElementById("btnConnectPLC").onclick = function () {
-    socket.emit('selectedPLCByClient', $('#inputGroupSelectPLC').val());
-    this.getElementsByTagName("label")[0].innerHTML = "Disconnect";
-  };
+
+    if (this.getElementsByTagName("label")[0].innerHTML == "Connect") {
+      this.getElementsByTagName("label")[0].innerHTML = "Disconnect";
+      socket.emit('selectedPLCByClient', $('#inputGroupSelectPLC').val());
+    }
+    else {
+      this.getElementsByTagName("label")[0].innerHTML = "Connect";
+      socket.emit('selectedPLCByClient', "PLC disconnect");
+    }
+  }
 
   function insertIndicatorTags(plcData, plcDataType, fatherTag, bDoOneTime) {
     var tDivLine = document.createElement('div');

@@ -24,6 +24,17 @@ module.exports = function (io) {
     });
 
     socket.on('selectedPLCByClient', function (msg) {
+
+      if (msg == "PLC disconnect") {
+        // need to 
+        // clearInterval(checkInterval);
+        // need to disconnect from current plc
+      }
+      else {
+        // need to connect to plc and set update interval
+
+      }
+
       console.log("Message from client: " + msg);
     });
 
