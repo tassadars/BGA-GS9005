@@ -12,7 +12,6 @@ $(function () {
   var bDoOneTimeQ = false;
   var bDoOneTimeM = false;
 
-
   $('form').submit(function () {
     socket.emit('chat message', $('#m').val());
     $('#m').val('');
@@ -25,7 +24,7 @@ $(function () {
     if (this.getElementsByTagName("label")[0].innerHTML == "Connect") {
       // click to connect
       this.getElementsByTagName("label")[0].innerHTML = "Disconnect";
-      
+
       bDoOneTimeI = false;
       bDoOneTimeQ = false;
       bDoOneTimeM = false;
@@ -51,7 +50,6 @@ $(function () {
 
     tDivLine.className = "inline";
     tDivLine.style.display = "none";
-
 
     tDivCaption.className = "indicatorCaption inline";
     tP.className = "tagMark";
@@ -106,6 +104,23 @@ $(function () {
     }
     // example of data
     // configData["plcs"].push({ name: "BGA_GS9031", ip: "192.168.0.70", slot:"0", rack:"4", room: "II/139" });
+
+    // check if plc is connected
+    if (configData["status"] == "PLC disconnect") {
+      console.log("disabled false");
+    } else {
+      tListBox.setAttribute("disabled", true);
+
+      for (let option of tListBox.options) {
+        // if ip address of plc in run the same as in list
+        if (option.value == configData["status"] ) {
+          option.selected = true;
+          document.getElementById("btnTxtConnectPLC").innerHTML = "Disconnect";
+        }
+      }
+      console.log("disabled true");
+    }
+
     console.log("Client got configuration data");
   });
 
