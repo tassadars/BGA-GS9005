@@ -20,11 +20,16 @@ $(function () {
 
   // click button Connect / Disconnect
   document.getElementById("btnConnectPLC").onclick = function () {
+    
+    let tListBox = document.getElementById("inputGroupSelectPLC");
 
     if (this.getElementsByTagName("label")[0].innerHTML == "Connect") {
       // click to connect
       this.getElementsByTagName("label")[0].innerHTML = "Disconnect";
-      document.getElementById("inputGroupSelectPLC").setAttribute("disabled", true);
+
+      tListBox.setAttribute("disabled", true);
+      tListBox.className += " connected";       
+      tListBox.nextElementSibling.firstElementChild.className += " connected";
 
       bDoOneTimeI = false;
       bDoOneTimeQ = false;
@@ -35,7 +40,11 @@ $(function () {
     else {
       // click to disconnect
       this.getElementsByTagName("label")[0].innerHTML = "Connect";
-      document.getElementById("inputGroupSelectPLC").removeAttribute("disabled");      
+
+      tListBox.removeAttribute("disabled");
+      tListBox.classList.remove("connected");       
+      tListBox.nextElementSibling.firstElementChild.classList.remove("connected");    
+      
       socket.emit('selectedPLCByClient', "PLC disconnect");
     }
   }
@@ -112,6 +121,9 @@ $(function () {
       //console.log("disabled false");
     } else {
       tListBox.setAttribute("disabled", true);
+      tListBox.className += " connected"; 
+      tListBox.nextElementSibling.firstElementChild.className += " connected";
+
       for (let option of tListBox.options) {
         // if ip address of plc in run the same as in list
         if (option.value == configData["status"]) {
@@ -132,7 +144,7 @@ $(function () {
     if (plcData["qualitySignal"]) {
 
       //console.log('quality good');
-
+  
       if (!bDoOneTimeI) { bDoOneTimeI = insertIndicatorTags(plcData, "inputs", allInputTags, bDoOneTimeI); }
       if (!bDoOneTimeQ) { bDoOneTimeQ = insertIndicatorTags(plcData, "outputs", allOutputTags, bDoOneTimeQ); }
       if (!bDoOneTimeM) { bDoOneTimeM = insertIndicatorTags(plcData, "merkers", allMerkerTags, bDoOneTimeM); }

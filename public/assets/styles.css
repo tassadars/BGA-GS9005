@@ -192,3 +192,8 @@ p.bitMark {
     fill: red;
 }
 
+#inputGroupSelectPLC.connected, #btnTxtConnectPLC.connected {
+    background-color: green !important;
+    color: white !important;
+    
+}
