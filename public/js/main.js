@@ -104,8 +104,17 @@ $(function () {
   // get data from server of PLC list to connect 
   socket.on('configData', function (configData) {
     var tListBox = document.getElementById("inputGroupSelectPLC");
+
+    // list already filled
+    if (tListBox.childElementCount > 1) {      
+      console.log("Debug: list box already filled by " + tListBox.childElementCount + " rows");
+      return 0;
+    }
+
+
     var tOption = document.createElement("option");
 
+    
     for (var currentPLC in configData['plcs']) {
       tOption.text = configData['plcs'][currentPLC].name;
       tOption.value = configData['plcs'][currentPLC].ip;
