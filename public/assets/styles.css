@@ -71,7 +71,7 @@ h1 {
 
 h2 {
     margin: -5px;
-    margin-left: -20px;
+    margin-left: -15px;
     margin-bottom: 2px;
     font-size: 1.5em;
 }
@@ -183,6 +183,8 @@ p.bitMark {
 .col-sm-3, .col-sm-4 {
     min-width: 200px;
     max-width: 250px;
+    padding: 10px;
+    padding-left: 30px;
 }
 
 /*  */
