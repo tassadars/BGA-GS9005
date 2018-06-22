@@ -12,11 +12,11 @@ $(function () {
   var bDoOneTimeQ = false;
   var bDoOneTimeM = false;
 
-  $('form').submit(function () {
-    socket.emit('chat message', $('#m').val());
-    $('#m').val('');
-    return false;
-  });
+  // $('form').submit(function () {
+  //   socket.emit('chat message', $('#m').val());
+  //   $('#m').val('');
+  //   return false;
+  // });
 
   // click button Connect / Disconnect
   document.getElementById("btnConnectPLC").onclick = function () {

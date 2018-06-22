@@ -199,3 +199,8 @@ p.bitMark {
     color: white !important;
     
 }
+
+#btnTxtConnectPLC:hover {
+    background-color: dodgerblue !important;
+    color: black !important;
+}
